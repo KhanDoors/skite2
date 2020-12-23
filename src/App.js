@@ -10,6 +10,7 @@ import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme";
+import Projects from "./components/pages/Projects";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/projects" component={Projects} />
 
           <Redirect to="/" />
         </Switch>
