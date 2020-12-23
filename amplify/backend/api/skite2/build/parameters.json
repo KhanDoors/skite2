@@ -1,0 +1,8 @@
+{
+    "CreateAPIKey": 1,
+    "AppSyncApiName": "skite2",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-skite2-staging-02002-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/4b60f52074a785a02b753cca04b405f41543a3ba"
+}

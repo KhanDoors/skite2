@@ -1,0 +1,166 @@
+type Portfolio @aws_iam @aws_api_key {
+  id: ID!
+  title: String!
+  description: String
+  url: String
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelPortfolioConnection @aws_api_key @aws_iam {
+  items: [Portfolio]
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelPortfolioFilterInput {
+  id: ModelIDInput
+  title: ModelStringInput
+  description: ModelStringInput
+  url: ModelStringInput
+  and: [ModelPortfolioFilterInput]
+  or: [ModelPortfolioFilterInput]
+  not: ModelPortfolioFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  getPortfolio(id: ID!): Portfolio @aws_api_key @aws_iam
+  listPortfolios(filter: ModelPortfolioFilterInput, limit: Int, nextToken: String): ModelPortfolioConnection @aws_api_key @aws_iam
+  syncPortfolios(filter: ModelPortfolioFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPortfolioConnection @aws_api_key @aws_iam
+}
+
+input CreatePortfolioInput {
+  id: ID
+  title: String!
+  description: String
+  url: String
+  _version: Int
+}
+
+input UpdatePortfolioInput {
+  id: ID!
+  title: String
+  description: String
+  url: String
+  _version: Int
+}
+
+input DeletePortfolioInput {
+  id: ID
+  _version: Int
+}
+
+type Mutation {
+  createPortfolio(input: CreatePortfolioInput!, condition: ModelPortfolioConditionInput): Portfolio @aws_api_key @aws_iam
+  updatePortfolio(input: UpdatePortfolioInput!, condition: ModelPortfolioConditionInput): Portfolio @aws_api_key @aws_iam
+  deletePortfolio(input: DeletePortfolioInput!, condition: ModelPortfolioConditionInput): Portfolio @aws_api_key @aws_iam
+}
+
+input ModelPortfolioConditionInput {
+  title: ModelStringInput
+  description: ModelStringInput
+  url: ModelStringInput
+  and: [ModelPortfolioConditionInput]
+  or: [ModelPortfolioConditionInput]
+  not: ModelPortfolioConditionInput
+}
+
+type Subscription {
+  onCreatePortfolio: Portfolio @aws_subscribe(mutations: ["createPortfolio"]) @aws_api_key @aws_iam
+  onUpdatePortfolio: Portfolio @aws_subscribe(mutations: ["updatePortfolio"]) @aws_api_key @aws_iam
+  onDeletePortfolio: Portfolio @aws_subscribe(mutations: ["deletePortfolio"]) @aws_api_key @aws_iam
+}
